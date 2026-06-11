@@ -51,9 +51,10 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   pcl_ros
   tf
-  livox_ros_driver
+  livox_ros_driver2
   message_generation
   eigen_conversions
+  
 )
 
 find_package(Eigen3 REQUIRED)
@@ -76,6 +77,11 @@ include_directories(
   ${PYTHON_INCLUDE_DIRS}
   include)
 
+include_directories(
+    include
+    /home/tlha/.local/lib/python3.8/site-packages/numpy/core/include
+)
+
 generate_messages(
  DEPENDENCIES
  geometry_msgs
@@ -92,6 +98,12 @@ add_executable(li_init
         include/ikd-Tree/ikd_Tree.cpp
         include/LI_init/LI_init.cpp
         src/preprocess.cpp)
+
+      
+add_dependencies(li_init
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
 
 target_link_libraries(li_init ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${PYTHON_LIBRARIES} ${CERES_LIBRARIES})
 target_include_directories(li_init PRIVATE ${PYTHON_INCLUDE_DIRS})
